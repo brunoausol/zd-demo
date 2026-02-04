@@ -1,0 +1,32 @@
+@Orders.Api_HostAddress = http://localhost:5218
+
+POST {{Orders.Api_HostAddress}}/api/v1/orders
+Content-Type: application/json
+
+{
+  "customerName": "Ana Costa",
+  "totalAmount": 120.50,
+  "currency": "EUR"
+}
+
+###
+
+POST {{Orders.Api_HostAddress}}/api/v2/orders
+Content-Type: application/json
+
+{
+  "customerName": "Bruno Ferreira",
+  "customerEmail": "bruno@example.com",
+  "totalAmount": 320.00,
+  "currency": "EUR"
+}
+
+###
+
+GET {{Orders.Api_HostAddress}}/api/v1/orders
+Accept: application/json
+
+###
+
+GET {{Orders.Api_HostAddress}}/api/v2/orders
+Accept: application/json
