@@ -15,8 +15,12 @@ public sealed class OrdersDbContextFactory : IDesignTimeDbContextFactory<OrdersD
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = configuration.GetConnectionString("Orders") ??
-                               "Host=localhost;Port=5432;Database=orders;Username=postgres;Password=postgres";
+        var connectionString = configuration.GetConnectionString("Orders");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("Connection string 'Orders' not found. Please check your configuration.");
+        }
 
         var optionsBuilder = new DbContextOptionsBuilder<OrdersDbContext>();
         optionsBuilder.UseNpgsql(connectionString);

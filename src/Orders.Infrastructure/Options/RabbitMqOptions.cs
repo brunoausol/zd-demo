@@ -1,4 +1,4 @@
-namespace Orders.Infrastructure.Messaging;
+namespace Orders.Infrastructure.Options;
 
 public sealed class RabbitMqOptions
 {
@@ -10,4 +10,5 @@ public sealed class RabbitMqOptions
     public string Password { get; init; } = "guest";
     public string Exchange { get; init; } = "orders.exchange";
     public string RoutingKey { get; init; } = "orders.created";
+    public string Queue { get; init; } = "orders.created.queue";
 }

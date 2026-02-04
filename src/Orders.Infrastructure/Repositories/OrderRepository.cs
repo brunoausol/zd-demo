@@ -20,6 +20,11 @@ public sealed class OrderRepository : IOrderRepository
     public async Task<IReadOnlyList<Order>> GetAllAsync(CancellationToken cancellationToken)
         => await _dbContext.Orders.AsNoTracking().OrderByDescending(order => order.CreatedAtUtc).ToListAsync(cancellationToken);
 
+    public Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return _dbContext.Orders.AsNoTracking().FirstOrDefaultAsync(order => order.Id == id, cancellationToken);
+    }
+
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => _dbContext.SaveChangesAsync(cancellationToken);
 }

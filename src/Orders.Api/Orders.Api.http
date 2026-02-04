@@ -1,32 +1,25 @@
-@Orders.Api_HostAddress = http://localhost:5218
+@Orders.Api_HostAddress = http://localhost:8080
 
-POST {{Orders.Api_HostAddress}}/api/v1/orders
+# Create a new order
+POST {{Orders.Api_HostAddress}}/orders
 Content-Type: application/json
 
 {
   "customerName": "Ana Costa",
-  "totalAmount": 120.50,
-  "currency": "EUR"
+  "totalAmount": 120.50
 }
 
-###
+### 
 
-POST {{Orders.Api_HostAddress}}/api/v2/orders
-Content-Type: application/json
-
-{
-  "customerName": "Bruno Ferreira",
-  "customerEmail": "bruno@example.com",
-  "totalAmount": 320.00,
-  "currency": "EUR"
-}
-
-###
-
-GET {{Orders.Api_HostAddress}}/api/v1/orders
+# Retrieve all orders
+GET {{Orders.Api_HostAddress}}/orders
 Accept: application/json
 
+
 ###
 
-GET {{Orders.Api_HostAddress}}/api/v2/orders
+# Assuming we have an orderId from the previous POST response, we can retrieve that specific order
+@orderId = {{orderId}}
+
+GET {{Orders.Api_HostAddress}}/orders/{{orderId}}
 Accept: application/json

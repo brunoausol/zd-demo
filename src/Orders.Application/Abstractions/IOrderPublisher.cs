@@ -1,4 +1,4 @@
-using Orders.Application.Events;
+using Orders.Application.Contracts;
 
 namespace Orders.Application.Abstractions;
 

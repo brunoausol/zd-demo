@@ -20,23 +20,9 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasMaxLength(200)
             .IsRequired();
 
-        builder.Property(order => order.CustomerEmail)
-            .HasColumnName("customer_email")
-            .HasMaxLength(320);
-
         builder.Property(order => order.TotalAmount)
             .HasColumnName("total_amount")
             .HasPrecision(18, 2)
-            .IsRequired();
-
-        builder.Property(order => order.Currency)
-            .HasColumnName("currency")
-            .HasMaxLength(3)
-            .IsRequired();
-
-        builder.Property(order => order.Status)
-            .HasColumnName("status")
-            .HasConversion<int>()
             .IsRequired();
 
         builder.Property(order => order.CreatedAtUtc)

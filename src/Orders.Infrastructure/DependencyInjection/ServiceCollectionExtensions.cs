@@ -16,8 +16,9 @@ public static class ServiceCollectionExtensions
         services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
         services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
 
-        var connectionString = configuration.GetConnectionString("Orders") ??
-                               "Host=localhost;Port=5432;Database=orders;Username=orders;Password=orders";
+        var connectionString = configuration.GetConnectionString("Orders");
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException("Database connection string 'Orders' is not configured.");
 
         services.AddDbContext<OrdersDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql => npgsql.MigrationsAssembly(typeof(OrdersDbContext).Assembly.FullName)));

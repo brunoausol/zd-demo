@@ -2,7 +2,7 @@
 
 This repository contains a layered .NET 9 microservice that exposes order creation and listing endpoints.
 It is intentionally structured to demonstrate **zero-downtime** database migrations and **expand/contract**
-API contracts with versioned endpoints.
+API contracts.
 
 ## Architecture
 
@@ -13,17 +13,15 @@ Layers:
 - **Orders.Infrastructure**: EF Core (Postgres), RabbitMQ publisher, and repositories.
 
 Key design notes:
-- **API versioning by route**: `v1` and `v2` endpoints allow expand/contract behavior.
-- **EF Core + Postgres**: `OrdersDbContext` maps the `orders` table with nullable `customer_email`.
+- **EF Core + Postgres**: `OrdersDbContext` maps the `orders` table.
 - **RabbitMQ**: publishes an `OrderCreatedEvent` on creation.
 - **Migrations**: `Database:MigrateOnStartup` is enabled only for Development.
 
 ## Endpoints
 
-- `POST /api/v1/orders` (no email)
-- `GET /api/v1/orders`
-- `POST /api/v2/orders` (includes `customerEmail`)
-- `GET /api/v2/orders`
+- `POST /orders`
+- `GET /orders`
+- `GET /orders/{orderId}`
 
 See examples in `src/Orders.Api/Orders.Api.http`.
 
@@ -40,7 +38,7 @@ dotnet restore Orders.slnx
 dotnet build Orders.slnx
 ```
 
-2. Set connection strings (optional override):
+2. Set connection strings:
 - `ConnectionStrings:Orders` in `src/Orders.Api/appsettings.json`
 
 3. Run the API:
@@ -50,6 +48,20 @@ dotnet run --project src/Orders.Api
 
 If you keep `Database:MigrateOnStartup` enabled in Development, the service will auto-apply migrations.
 
+## Running with Docker Compose
+
+There is a compose setup under `docker/docker-compose.yml` that brings up:
+- `orders-api`
+- `postgres`
+- `rabbitmq` (management UI exposed on port 15672)
+
+From the repo root:
+```powershell
+docker compose -f docker/docker-compose.yml up --build
+```
+
+You can tweak local settings in `docker/.env`.
+
 ## Migrations (recommended flow)
 
 Create the initial migration:
@@ -57,14 +69,6 @@ Create the initial migration:
 dotnet ef migrations add InitialCreate -p src/Orders.Infrastructure -s src/Orders.Api
 dotnet ef database update -p src/Orders.Infrastructure -s src/Orders.Api
 ```
-
-## Zero-Downtime Expand/Contract
-
-See `docs/zero-downtime.md` for a concrete migration flow, including:
-- Expand schema (add nullable columns)
-- Dual-write using v2
-- Backfill
-- Contract old endpoints/columns
 
 ## Notes
 

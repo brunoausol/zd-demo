@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Orders.Api.Health;
 using Orders.Application.DependencyInjection;
 using Orders.Infrastructure.Data;
 using Orders.Infrastructure.DependencyInjection;
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>("database")
+    .AddCheck<RabbitMqHealthCheck>("rabbitmq");
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -20,8 +24,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -29,8 +33,8 @@ using (var scope = app.Services.CreateScope())
     if (options.MigrateOnStartup)
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<OrdersDbContext>();
-        dbContext.Database.Migrate();
+        await dbContext.Database.MigrateAsync();
     }
 }
 
-app.Run();
+await app.RunAsync();

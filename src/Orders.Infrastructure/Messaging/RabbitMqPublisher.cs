@@ -1,9 +1,9 @@
-using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orders.Application.Abstractions;
-using Orders.Application.Events;
+using Orders.Application.Contracts;
+using Orders.Infrastructure.Options;
 using RabbitMQ.Client;
 
 namespace Orders.Infrastructure.Messaging;
@@ -31,6 +31,16 @@ public sealed class RabbitMqPublisher : IOrderPublisher, IDisposable
         _connection = factory.CreateConnection("orders-api-publisher");
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(_options.Exchange, ExchangeType.Topic, durable: true, autoDelete: false);
+        _channel.QueueDeclare(
+            queue: _options.Queue,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null);
+        _channel.QueueBind(
+            queue: _options.Queue,
+            exchange: _options.Exchange,
+            routingKey: _options.RoutingKey);
     }
 
     public Task PublishAsync(OrderCreatedEvent message, CancellationToken cancellationToken)
