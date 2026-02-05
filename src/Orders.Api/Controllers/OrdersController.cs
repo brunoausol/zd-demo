@@ -25,7 +25,6 @@ public sealed class OrdersController : ControllerBase
 
         var response = new OrderResponse(
             created.Id,
-            created.CustomerName,
             created.FirstName,
             created.LastName,
             created.TotalAmount,
@@ -41,7 +40,6 @@ public sealed class OrdersController : ControllerBase
         var response = orders
             .Select(order => new OrderResponse(
                 order.Id,
-                order.CustomerName,
                 order.FirstName,
                 order.LastName,
                 order.TotalAmount,
@@ -62,7 +60,6 @@ public sealed class OrdersController : ControllerBase
 
         var response = new OrderResponse(
             order.Id,
-            order.CustomerName,
             order.FirstName,
             order.LastName,
             order.TotalAmount,

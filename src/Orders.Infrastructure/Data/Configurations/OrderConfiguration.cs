@@ -15,18 +15,15 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(order => order.Id)
             .HasColumnName("id");
 
-        builder.Property(order => order.CustomerName)
-            .HasColumnName("customer_name")
+        builder.Property(order => order.FirstName)
+            .HasColumnName("first_name")
             .HasMaxLength(200)
             .IsRequired();
 
-        builder.Property(order => order.FirstName)
-            .HasColumnName("first_name")
-            .HasMaxLength(200);
-
         builder.Property(order => order.LastName)
             .HasColumnName("last_name")
-            .HasMaxLength(200);
+            .HasMaxLength(200)
+            .IsRequired();
 
         builder.Property(order => order.TotalAmount)
             .HasColumnName("total_amount")
