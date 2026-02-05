@@ -20,6 +20,14 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasMaxLength(200)
             .IsRequired();
 
+        builder.Property(order => order.FirstName)
+            .HasColumnName("first_name")
+            .HasMaxLength(200);
+
+        builder.Property(order => order.LastName)
+            .HasColumnName("last_name")
+            .HasMaxLength(200);
+
         builder.Property(order => order.TotalAmount)
             .HasColumnName("total_amount")
             .HasPrecision(18, 2)

@@ -17,7 +17,11 @@ public sealed class OrderService
 
     public async Task<OrderResponse> CreateAsync(CreateOrderRequest request, CancellationToken cancellationToken)
     {
-        var order = Order.Create(request.CustomerName, request.TotalAmount);
+        var useSplittedNames = string.IsNullOrWhiteSpace(request.CustomerName);
+
+        var order = useSplittedNames
+            ? Order.Create(request.FirstName, request.LastName, request.TotalAmount)
+            : Order.Create(request.CustomerName, request.TotalAmount);
 
         await _orders.AddAsync(order, cancellationToken);
         await _orders.SaveChangesAsync(cancellationToken);
@@ -32,6 +36,8 @@ public sealed class OrderService
         return new OrderResponse(
             order.Id,
             order.CustomerName,
+            order.FirstName,
+            order.LastName,
             order.TotalAmount,
             order.CreatedAtUtc);
     }
@@ -43,6 +49,8 @@ public sealed class OrderService
             .Select(order => new OrderResponse(
                 order.Id,
                 order.CustomerName,
+                order.FirstName,
+                order.LastName,
                 order.TotalAmount,
                 order.CreatedAtUtc))
             .ToList();
@@ -58,6 +66,8 @@ public sealed class OrderService
         return new OrderResponse(
             order.Id,
             order.CustomerName,
+            order.FirstName,
+            order.LastName,
             order.TotalAmount,
             order.CreatedAtUtc);
     }

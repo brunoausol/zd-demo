@@ -21,15 +21,13 @@ public sealed class OrdersController : ControllerBase
         [FromBody] CreateOrderRequest request,
         CancellationToken cancellationToken)
     {
-        var created = await _orderService.CreateAsync(
-            new CreateOrderRequest(
-                request.CustomerName,
-                request.TotalAmount),
-            cancellationToken);
+        var created = await _orderService.CreateAsync(request, cancellationToken);
 
         var response = new OrderResponse(
             created.Id,
             created.CustomerName,
+            created.FirstName,
+            created.LastName,
             created.TotalAmount,
             created.CreatedAtUtc);
 
@@ -44,6 +42,8 @@ public sealed class OrdersController : ControllerBase
             .Select(order => new OrderResponse(
                 order.Id,
                 order.CustomerName,
+                order.FirstName,
+                order.LastName,
                 order.TotalAmount,
                 order.CreatedAtUtc))
             .ToList();
@@ -63,6 +63,8 @@ public sealed class OrdersController : ControllerBase
         var response = new OrderResponse(
             order.Id,
             order.CustomerName,
+            order.FirstName,
+            order.LastName,
             order.TotalAmount,
             order.CreatedAtUtc);
 
