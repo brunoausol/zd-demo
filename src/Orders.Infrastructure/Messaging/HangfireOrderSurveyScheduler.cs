@@ -2,6 +2,7 @@ using Hangfire;
 using Microsoft.Extensions.Options;
 using Orders.Application.Abstractions;
 using Orders.Application.Contracts;
+using Orders.Infrastructure.Messaging.Envelopes;
 using Orders.Infrastructure.Options;
 
 namespace Orders.Infrastructure.Messaging;
@@ -24,8 +25,9 @@ public sealed class HangfireOrderSurveyScheduler : IOrderSurveyScheduler
         cancellationToken.ThrowIfCancellationRequested();
 
         var delayHours = _options.SurveyDelayHours <= 0 ? 24 : _options.SurveyDelayHours;
-        _backgroundJobs.Schedule<SendPurchaseSurveyJob>(
-            job => job.ExecuteAsync(request),
+        var envelope = HangfireEnvelope.Create(HangfireMessageTypes.SendPurchaseSurveyV1, request);
+        _backgroundJobs.Schedule<ProcessHangfireEnvelopeJob>(
+            job => job.ExecuteAsync(envelope),
             TimeSpan.FromHours(delayHours));
 
         return Task.CompletedTask;

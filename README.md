@@ -20,6 +20,7 @@ Key design notes:
 - **RabbitMQ publisher**: API publishes `OrderCreatedEvent` when a new order is created.
 - **RabbitMQ consumer**: background worker consumes the event and sends order confirmation e-mail.
 - **Hangfire scheduler**: API schedules a purchase survey to be sent after a delay.
+- **Hangfire router/envelope pattern**: scheduled jobs are wrapped in envelopes and routed by message type.
 - **Reliability**: publisher uses broker confirms and consumer sends failed messages to DLQ.
 - **Migrations**: `Database:MigrateOnStartup` is enabled only for Development.
 

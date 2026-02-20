@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Orders.Application.Abstractions;
 using Orders.Infrastructure.Data;
 using Orders.Infrastructure.Messaging;
+using Orders.Infrastructure.Messaging.Envelopes;
 using Orders.Infrastructure.Options;
 using Orders.Infrastructure.Repositories;
 
@@ -66,7 +67,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IOrderSurveyScheduler, HangfireOrderSurveyScheduler>();
         services.AddSingleton<IOrderConfirmationEmailSender, OrderConfirmationEmailSender>();
         services.AddSingleton<IPurchaseSurveySender, PurchaseSurveySender>();
-        services.AddTransient<SendPurchaseSurveyJob>();
+        services.AddSingleton<IHangfireEnvelopeRouter, HangfireEnvelopeRouter>();
+        services.AddSingleton<IHangfireEnvelopeHandler, SendPurchaseSurveyV1EnvelopeHandler>();
+        services.AddTransient<ProcessHangfireEnvelopeJob>();
         services.AddHostedService<RabbitMqOrderCreatedConsumer>();
 
         return services;

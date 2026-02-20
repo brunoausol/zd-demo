@@ -14,7 +14,7 @@ public sealed class Order
     }
 
     public DateTime CreatedAtUtc { get; private set; }
-    public string CustomerName { get; private set; }
+    public string CustomerName { get; private set; } = string.Empty;
     public Guid Id { get; private set; }
     public decimal TotalAmount { get; private set; }
 
