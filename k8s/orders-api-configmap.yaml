@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orders-api-config
+data:
+  ASPNETCORE_HTTP_PORTS: "8080"
+  ASPNETCORE_ENVIRONMENT: "Production"
+  Database__MigrateOnStartup: "false"
+  ConnectionStrings__Orders: "Host=postgres;Port=5432;Database=orders;Username=postgres;Password=postgres"
+  RabbitMq__Host: "rabbitmq"
+  RabbitMq__Port: "5672"
+  RabbitMq__Exchange: "orders.exchange"
+  RabbitMq__RoutingKey: "orders.created"
+  RabbitMq__Queue: "orders.created.queue"
+  RabbitMq__DeadLetterExchange: "orders.deadletter.exchange"
+  RabbitMq__DeadLetterQueue: "orders.created.deadletter.queue"
+  RabbitMq__DeadLetterRoutingKey: "orders.created.deadletter"
+  RabbitMq__PublishConfirmTimeoutSeconds: "5"
+  RabbitMq__ProcessingRetryCount: "3"
+  RabbitMq__ShutdownDrainTimeoutSeconds: "30"
+  Hangfire__DashboardPath: "/hangfire"
+  Hangfire__WorkerCount: "5"
+  Hangfire__SurveyDelayHours: "24"
+  Hangfire__ShutdownTimeoutSeconds: "30"

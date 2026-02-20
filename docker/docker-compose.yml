@@ -42,6 +42,11 @@ services:
       RabbitMq__Password: orders
       RabbitMq__Exchange: orders.exchange
       RabbitMq__RoutingKey: orders.created
+      RabbitMq__ShutdownDrainTimeoutSeconds: 30
+      Hangfire__DashboardPath: /hangfire
+      Hangfire__WorkerCount: 5
+      Hangfire__SurveyDelayHours: 24
+      Hangfire__ShutdownTimeoutSeconds: 30
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,7 +55,7 @@ services:
     ports:
       - "8080:8080"
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health/ready || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10

@@ -8,11 +8,16 @@ public sealed class OrderService
 {
     private readonly IOrderRepository _orders;
     private readonly IOrderPublisher _publisher;
+    private readonly IOrderSurveyScheduler _surveyScheduler;
 
-    public OrderService(IOrderRepository orders, IOrderPublisher publisher)
+    public OrderService(
+        IOrderRepository orders,
+        IOrderPublisher publisher,
+        IOrderSurveyScheduler surveyScheduler)
     {
         _orders = orders;
         _publisher = publisher;
+        _surveyScheduler = surveyScheduler;
     }
 
     public async Task<OrderResponse> CreateAsync(CreateOrderRequest request, CancellationToken cancellationToken)
@@ -24,10 +29,14 @@ public sealed class OrderService
 
         var message = new OrderCreatedEvent(
             order.Id,
+            order.CustomerName,
             order.TotalAmount,
             order.CreatedAtUtc);
 
         await _publisher.PublishAsync(message, cancellationToken);
+        await _surveyScheduler.ScheduleAsync(
+            new OrderSurveyRequest(order.Id, order.CustomerName, order.CreatedAtUtc),
+            cancellationToken);
 
         return new OrderResponse(
             order.Id,
