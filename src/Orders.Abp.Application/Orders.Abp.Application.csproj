@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AbpVersion>9.0.0</AbpVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orders.Abp.Application.Contracts\Orders.Abp.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Orders.Abp.Domain\Orders.Abp.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.EventBus.Abstractions" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.Abstractions" Version="$(AbpVersion)" />
+  </ItemGroup>
+</Project>

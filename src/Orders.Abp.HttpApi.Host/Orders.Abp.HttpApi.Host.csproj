@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AbpVersion>9.0.0</AbpVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orders.Abp.Application\Orders.Abp.Application.csproj" />
+    <ProjectReference Include="..\Orders.Abp.EntityFrameworkCore\Orders.Abp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Orders.Abp.HttpApi\Orders.Abp.HttpApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.21.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.12" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.HangFire" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.EventBus.RabbitMq" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="$(AbpVersion)" />
+  </ItemGroup>
+</Project>

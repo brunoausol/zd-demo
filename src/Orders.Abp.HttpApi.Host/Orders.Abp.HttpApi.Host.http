@@ -1,0 +1,15 @@
+@Orders_Abp_Host = http://localhost:5050
+
+POST {{Orders_Abp_Host}}/orders
+Content-Type: application/json
+
+{
+  "customerName": "Alice Johnson",
+  "totalAmount": 149.90
+}
+
+###
+GET {{Orders_Abp_Host}}/orders
+
+###
+GET {{Orders_Abp_Host}}/health/ready

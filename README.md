@@ -7,6 +7,33 @@ It is intentionally structured to demonstrate **expand/contract** in multiple co
 - RabbitMQ integration events
 - Background processing behavior (RabbitMQ consumers and Hangfire jobs)
 
+## ABP Equivalent Solution
+
+This branch also includes an ABP-based equivalent implementation at `Orders.Abp.sln`:
+- **Host**: `src/Orders.Abp.HttpApi.Host`
+- **HTTP API**: `src/Orders.Abp.HttpApi`
+- **Application**: `src/Orders.Abp.Application` + `src/Orders.Abp.Application.Contracts`
+- **Domain**: `src/Orders.Abp.Domain` + `src/Orders.Abp.Domain.Shared`
+- **Infrastructure (EF Core)**: `src/Orders.Abp.EntityFrameworkCore`
+
+Official ABP integrations used:
+- `Volo.Abp.EventBus.RabbitMq` for distributed events (`OrderCreatedEto`)
+- `Volo.Abp.BackgroundJobs.HangFire` for delayed jobs (`SendPurchaseSurveyJob`)
+
+Equivalent endpoints:
+- `POST /orders`
+- `GET /orders`
+- `GET /orders/{orderId}`
+- `GET /hangfire`
+- `GET /health/live`
+- `GET /health/ready`
+
+Run:
+```powershell
+dotnet restore Orders.Abp.sln
+dotnet run --project src/Orders.Abp.HttpApi.Host
+```
+
 ## Architecture
 
 Layers:

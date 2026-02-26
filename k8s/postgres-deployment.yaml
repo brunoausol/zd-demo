@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: orders
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - pg_isready -U postgres -d orders
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 10
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - pg_isready -U postgres -d orders
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 6

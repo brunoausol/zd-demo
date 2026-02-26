@@ -5,7 +5,7 @@ metadata:
 data:
   ASPNETCORE_HTTP_PORTS: "8080"
   ASPNETCORE_ENVIRONMENT: "Production"
-  Database__MigrateOnStartup: "false"
+  Database__MigrateOnStartup: "true"
   ConnectionStrings__Orders: "Host=postgres;Port=5432;Database=orders;Username=postgres;Password=postgres"
   RabbitMq__Host: "rabbitmq"
   RabbitMq__Port: "5672"
