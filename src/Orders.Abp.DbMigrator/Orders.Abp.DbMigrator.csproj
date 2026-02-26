@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AbpVersion>9.0.0</AbpVersion>
@@ -8,10 +9,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Orders.Abp.Application.Contracts\Orders.Abp.Application.Contracts.csproj" />
-    <ProjectReference Include="..\Orders.Abp.Application\Orders.Abp.Application.csproj" />
+    <ProjectReference Include="..\Orders.Abp.EntityFrameworkCore\Orders.Abp.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.PostgreSql" Version="$(AbpVersion)" />
   </ItemGroup>
 </Project>

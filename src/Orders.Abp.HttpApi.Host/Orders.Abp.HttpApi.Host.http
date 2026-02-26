@@ -1,6 +1,7 @@
 @Orders_Abp_Host = http://localhost:5050
+@orderId = 00000000-0000-0000-0000-000000000000
 
-POST {{Orders_Abp_Host}}/orders
+POST {{Orders_Abp_Host}}/api/app/order
 Content-Type: application/json
 
 {
@@ -9,7 +10,10 @@ Content-Type: application/json
 }
 
 ###
-GET {{Orders_Abp_Host}}/orders
+GET {{Orders_Abp_Host}}/api/app/order
+
+###
+GET {{Orders_Abp_Host}}/api/app/order/{{orderId}}
 
 ###
 GET {{Orders_Abp_Host}}/health/ready

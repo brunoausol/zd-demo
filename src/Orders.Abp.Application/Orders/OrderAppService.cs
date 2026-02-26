@@ -56,7 +56,7 @@ public class OrderAppService : ApplicationService, IOrderAppService
         return new OrderResponse(order.Id, order.CustomerName, order.TotalAmount, order.CreationTime);
     }
 
-    public async Task<IReadOnlyList<OrderResponse>> GetAllAsync()
+    public async Task<IReadOnlyList<OrderResponse>> GetListAsync()
     {
         var orders = await _orderRepository.GetListAsync();
 
@@ -66,7 +66,7 @@ public class OrderAppService : ApplicationService, IOrderAppService
             .ToList();
     }
 
-    public async Task<OrderResponse?> GetByIdAsync(Guid id)
+    public async Task<OrderResponse?> GetAsync(Guid id)
     {
         var order = await _orderRepository.FindAsync(id);
         if (order is null)

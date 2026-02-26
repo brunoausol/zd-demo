@@ -15,22 +15,26 @@ This branch also includes an ABP-based equivalent implementation at `Orders.Abp.
 - **Application**: `src/Orders.Abp.Application` + `src/Orders.Abp.Application.Contracts`
 - **Domain**: `src/Orders.Abp.Domain` + `src/Orders.Abp.Domain.Shared`
 - **Infrastructure (EF Core)**: `src/Orders.Abp.EntityFrameworkCore`
+- **Database migrator**: `src/Orders.Abp.DbMigrator`
 
 Official ABP integrations used:
 - `Volo.Abp.EventBus.RabbitMq` for distributed events (`OrderCreatedEto`)
 - `Volo.Abp.BackgroundJobs.HangFire` for delayed jobs (`SendPurchaseSurveyJob`)
 
 Equivalent endpoints:
-- `POST /orders`
-- `GET /orders`
-- `GET /orders/{orderId}`
+- `POST /api/app/order`
+- `GET /api/app/order`
+- `GET /api/app/order/{orderId}`
 - `GET /hangfire`
 - `GET /health/live`
 - `GET /health/ready`
 
+The ABP HTTP layer uses **Auto API Controllers** (conventional controllers), so no explicit controller class is required.
+
 Run:
 ```powershell
 dotnet restore Orders.Abp.sln
+dotnet run --project src/Orders.Abp.DbMigrator
 dotnet run --project src/Orders.Abp.HttpApi.Host
 ```
 
